@@ -1,0 +1,29 @@
+/* 전역 box-sizing 설정 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 스타일 초기화 (기본 스타일 제거) */
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+}
+
+.App {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    text-align: center;
+}
+
+.Main {
+    padding-top: 80px;
+    flex: 1;
+}
