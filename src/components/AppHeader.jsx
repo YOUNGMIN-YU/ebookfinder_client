@@ -63,7 +63,10 @@ export default function AppHeader() {
             }}
         >
             <ThemeProvider theme={defaultTheme}>
-                <Box className={styles.AppHeader} sx={{}} >
+                <Box className={styles.AppHeader} sx={{
+                    maxWidth: { md: "900px" },
+                    alignItems: "center",
+                }} >
                     <Grid className={styles.Grid} >
                         <Grid item xs={2} className={styles.Logo}>
                             <Link to="/">
