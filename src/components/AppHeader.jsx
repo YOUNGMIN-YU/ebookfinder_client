@@ -14,6 +14,15 @@ const defaultTheme = createTheme({
     typography: {
         fontFamily: 'Dovemayo_gothic',
     },
+    breakpoints: {
+        values: {
+          xs: 0,
+          sm: 576,
+          md: 992,
+          lg: 1200,
+          xl: 1600,
+        },
+      },
 });
 
 export default function AppHeader() {
@@ -64,8 +73,7 @@ export default function AppHeader() {
         >
             <ThemeProvider theme={defaultTheme}>
                 <Box className={styles.AppHeader} sx={{
-                    maxWidth: { md: "900px" },
-                    alignItems: "center",
+                    maxWidth: { md: "992px" },
                 }} >
                     <Grid className={styles.Grid} >
                         <Grid item xs={2} className={styles.Logo}>
