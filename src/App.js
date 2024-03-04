@@ -1,18 +1,19 @@
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
-import AppHeader from './components/AppHeader';
+import AppHeader from './components/AppHeader'
+import { Flex } from 'antd';
 
 function App() {
   return (
-    <div className="App">
-      <AppHeader />
-      <div className="Main">
+    <>
+      <Flex vertical justify='center' align='center'>
+        <AppHeader />
         <Routes>
-          <Route path="/" element={<Main />}/>
+          <Route path="/" element={<Main />} />
         </Routes>
-      </div>
-    </div>
+      </Flex>
+    </>
   );
 }
 
