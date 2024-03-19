@@ -26,7 +26,7 @@ const useSnackbar = () => {
             autoHideDuration={1000}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            sx={{ top: '100px', animationDuration: '0s', transitionDuration: '0s' }}
+            sx={{ top: '150px', animationDuration: '0.1s', transitionDuration: '0.1s' }}
         >
             <Alert onClose={handleClose} severity={severity}>
                 {message}
