@@ -7,6 +7,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.10",
+    "@tanstack/react-query": "^5.26.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -16,11 +17,14 @@
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
+    "react-headroom": "^3.2.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.22.0",
     "react-scripts": "^5.0.1",
+    "react-sticky-el": "^2.1.0",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,6 +52,7 @@
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@tanstack/react-query-devtools": "^5.27.0",
     "source-map-loader": "^5.0.0"
   }
 }
