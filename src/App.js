@@ -1,19 +1,31 @@
-import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
 import Main from './pages/Main';
-import AppHeader from './components/AppHeader'
-import { Flex } from 'antd';
+
+const renderEmpty = () => (<></>); // 렌더링 될때 컴포넌트 기본 내장된 empty 컴포넌트 제거
 
 function App() {
   return (
-    <>
-      <Flex vertical justify='center' align='center'>
-        <AppHeader />
-        <Routes>
-          <Route path="/" element={<Main />} />
-        </Routes>
-      </Flex>
-    </>
+    <ConfigProvider
+      renderEmpty={renderEmpty}
+      theme={{
+        token: {
+          fontFamily: 'Pretendard-Regular',
+        },
+        components: {
+          Collapse: {
+            headerPadding: '6px 8px', contentPadding: '8px'
+          },
+        },
+      }}
+    >
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/ebooks" element={<Main />} />
+        <Route path="/elibs" element={<Main />} />
+        <Route path="/elibs/settings" element={<Main />} />
+      </Routes>
+    </ConfigProvider>
   );
 }
 
