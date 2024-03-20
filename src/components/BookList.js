@@ -2,7 +2,8 @@ import React from 'react'
 import fallBack from '../assets/fallback.png';
 import CustomSkeleton from './CustomSkeleton';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Divider, List, Typography, Row, Collapse, Image, } from 'antd';
+import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Text, Title } = Typography;
 
@@ -16,7 +17,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
             hasMore={hasNextPage}
             scrollThreshold={0.9}
             loader={<CustomSkeleton />}
-            endMessage={<Divider plain style={{ marginBottom: '32px'}}>더이상 찾을 수 있는 전자책이 없어요. 🤐</Divider>}
+            endMessage={<Divider plain style={{ marginBottom: '32px' }}>더이상 찾을 수 있는 전자책이 없어요. 🤐</Divider>}
             style={{
                 padding: '0 10px',
             }}
@@ -93,7 +94,21 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                                             marginTop: '15px',
                                             marginRight: '30px',
                                         }}
-                                        items={[{ key: `${item.ebookBarcode}`, label: <Text ellipsis={true} >보유 전자도서관 보기</Text>, children: <p>{item.ebookElibId}</p> }]}
+                                        items={[{
+                                            key: `${item.ebookBarcode}`,
+                                            label: <Text >보유 전자도서관 보기</Text>,
+                                            children:
+                                                <Link to={`${item.elibUrl}`} target="_blank" rel="noopener noreferrer" title="도서관으로 이동" >
+                                                    <Row >
+                                                        <Col span={16}>
+                                                            <Text >{item.elibName}</Text>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Text ellipsis={true} >{item.ebookPlacedEnum}</Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Link>
+                                        }]}
                                     />
                                 </>
                             }
@@ -101,6 +116,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                     </List.Item>
                 )}
             />
+            <FloatButton.BackTop shape="circle" tooltip={<div>맨 위로</div>} />
         </InfiniteScroll>
     )
 }
