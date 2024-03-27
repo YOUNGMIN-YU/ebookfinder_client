@@ -12,8 +12,8 @@ export const MainLayout = () => {
             <AppHeader />
           </Headroom>
         </HeadroomWrapper>
+        <Outlet />
       </Layout>
-      <Outlet />
     </>
   );
 }
@@ -23,7 +23,6 @@ export default MainLayout;
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   min-width: 100%;
   position: relative;
