@@ -1,23 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import HeaderLogo from '../assets/HeaderLogo.png'
 import useSnackbar from '../hooks/useSnackbar';
 import { useBookStoreActions } from "../store/useBookStore";
 import { Input, Col, Row, Image, Drawer, Button, Typography } from 'antd';
 import { AlignRightOutlined, CloseCircleFilled } from '@ant-design/icons';
-import styles from '../styles/appheader.module.css'
 import styled from "styled-components";
 
 const { Search } = Input;
 const { Text } = Typography;
 
 export default function AppHeader() {
-    const { setSearchKeyword } = useBookStoreActions();
+    const { setSearchKeyword, setSearchElibKeyword } = useBookStoreActions();
     const [showSnackbar, SnackbarComponent] = useSnackbar();
     const [tempKeyword, setTempKeyword] = useState('');
     const [isSearchLoading, setIsSearchLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [showSuffix, setShowSuffix] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
 
     const showDrawer = () => {
         setOpen(true);
@@ -52,13 +53,32 @@ export default function AppHeader() {
             return;
         }
 
-        setSearchKeyword(tempKeyword);
+        if (location.pathname === '/ebooks') {
+            setSearchKeyword(tempKeyword);
+            setSearchEbookKeywordParams(tempKeyword);
+        }
+
+        if (location.pathname === '/elibs') {
+            setSearchElibKeyword(tempKeyword);
+            setSearchElibKeywordParams(tempKeyword);
+        }
         setIsSearchLoading(false);
+        handleSuffixClick();
     };
 
-    const handleOnChange = (e) => {
-        setTempKeyword(e);
-        setShowSuffix(e !== ''); // input 값이 비어있지 않으면 suffix를 보여줌
+    const setSearchEbookKeywordParams = (tempKeyword) => {
+        searchParams.set('searchEbookKeyword', tempKeyword);
+        setSearchParams(searchParams);
+    };
+
+    const setSearchElibKeywordParams = (tempKeyword) => {
+        searchParams.set('searchElibKeyword', tempKeyword);
+        setSearchParams(searchParams);
+    };
+
+    const handleOnChange = (value) => {
+        setTempKeyword(value);
+        setShowSuffix(value !== ''); // input 값이 비어있지 않으면 suffix를 보여줌
     }
 
     const handleSuffixClick = () => {
@@ -100,24 +120,18 @@ export default function AppHeader() {
                         loading={isSearchLoading}
                         onSearch={handleSearch}
                         onChange={(e) => handleOnChange(e.target.value)}
-                        suffix={
-                            <CloseCircleFilled
-                                className={styles.suffix}
-                                onClick={handleSuffixClick}
-                                data-isshow={showSuffix}
-                            />
-                        }
+                        suffix={<SuffixIcon showSuffix={showSuffix} onClick={handleSuffixClick} />}
                     />
                 </Col>
             </Row>
             <Row justify="space-evenly" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '40px', textAlign: 'center', }}>
-                <Col span={8} style={{ lineHeight: '40px' }}>
+                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/ebooks' ? '3px solid #3e3e3e' : 'none', }}>
                     <Link to={'/ebooks'}><Text style={{ color: '#777', fontSize: '16px', }}>전자책 검색</Text></Link>
                 </Col>
-                <Col span={8} style={{ lineHeight: '40px' }}>
+                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/elibs' ? '3px solid #3e3e3e' : 'none', }}>
                     <Link to={'/elibs'}><Text style={{ color: '#777', fontSize: '16px', }}>전자도서관 목록</Text></Link>
                 </Col>
-                <Col span={8} style={{ lineHeight: '40px' }}>
+                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/elibs/settings' ? '3px solid #3e3e3e' : 'none', }}>
                     <Link to={'/elibs/settings'}><Text style={{ color: '#777', fontSize: '16px', }}>전자도서관 설정</Text></Link>
                 </Col>
             </Row>
@@ -132,8 +146,20 @@ const HeadrowWrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100dvw;
-    max-width: 972px;
+    max-width: 992px;
     height: 130px;
     padding: 2.5px 10px;
     border-bottom: 1px solid #d8dfe6;
 `
+
+const SuffixIcon = styled(CloseCircleFilled)`
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    color: rgba(0, 0, 0, .25);
+    opacity: ${({ showSuffix }) => (showSuffix ? 1 : 0)};
+    transition: opacity 0.3s ease-in-out;
+    transform: translateY(-50%);
+    pointer-events: ${({ showSuffix }) => (showSuffix ? 'unset' : 'none')};
+    z-index: 1;
+`;
