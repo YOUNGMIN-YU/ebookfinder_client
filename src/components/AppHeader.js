@@ -114,13 +114,13 @@ export default function AppHeader() {
             <Row justify="center" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '50px', }}>
                 <Col flex="auto" style={{ display: 'flex', alignItems: 'center', }}>
                     <Search
-                        placeholder="검색어를 입력해주세요"
+                        placeholder="제목 또는 저자를 입력해주세요"
                         size="large"
                         value={tempKeyword}
                         loading={isSearchLoading}
                         onSearch={handleSearch}
                         onChange={(e) => handleOnChange(e.target.value)}
-                        suffix={<SuffixIcon showSuffix={showSuffix} onClick={handleSuffixClick} />}
+                        suffix={<SuffixIcon $showSuffix={showSuffix} onClick={handleSuffixClick} />}
                     />
                 </Col>
             </Row>
@@ -157,9 +157,9 @@ const SuffixIcon = styled(CloseCircleFilled)`
     top: 50%;
     right: 10px;
     color: rgba(0, 0, 0, .25);
-    opacity: ${({ showSuffix }) => (showSuffix ? 1 : 0)};
+    opacity: ${props => props.$showSuffix ? 1 : 0};
     transition: opacity 0.3s ease-in-out;
     transform: translateY(-50%);
-    pointer-events: ${({ showSuffix }) => (showSuffix ? 'unset' : 'none')};
+    pointer-events: ${props => props.$showSuffix ? 'unset' : 'none'};
     z-index: 1;
 `;
