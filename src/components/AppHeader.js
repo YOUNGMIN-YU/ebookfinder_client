@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 const { Search } = Input;
 const { Text } = Typography;
+const inputElement = document.getElementById('searchInput');
 
 export default function AppHeader() {
     const { setSearchKeyword, setSearchElibKeyword } = useBookStoreActions();
@@ -64,6 +65,7 @@ export default function AppHeader() {
         }
         setIsSearchLoading(false);
         handleSuffixClick();
+        inputElement.blur()
     };
 
     const setSearchEbookKeywordParams = (tempKeyword) => {
@@ -114,6 +116,7 @@ export default function AppHeader() {
             <Row justify="center" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '50px', }}>
                 <Col flex="auto" style={{ display: 'flex', alignItems: 'center', }}>
                     <Search
+                        id="searchInput"
                         placeholder="제목 또는 저자를 입력해주세요"
                         size="large"
                         value={tempKeyword}
