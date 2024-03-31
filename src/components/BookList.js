@@ -1,18 +1,58 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import fallBack from '../assets/fallback.png';
 import CustomSkeleton from './CustomSkeleton';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton } from 'antd';
+import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Text, Title } = Typography;
 
 export default function BookList({ data, fetchNextPage, hasNextPage, }) {
-    const bookData = data;
+    const [ellipsis, setEllipsis] = useState(true);
+
+    const sortDataByDate = (data) => {
+        const pages = data?.pages;
+
+        if (Array.isArray(pages)) {
+            pages.sort((a, b) => {
+                const dateA = new Date(...a.ebookDate);
+                const dateB = new Date(...b.ebookDate);
+                return dateB - dateA;
+            });
+        }
+        return pages;
+    };
+
+    const renderElibs = (bookItems) => {
+        const elibNameArray = bookItems.elibName;
+        const elibUrlArray = bookItems.elibUrl;
+        const ebookPlacedEnumArray = bookItems.ebookPlacedEnum;
+
+        return elibNameArray.map((item, index) => (
+            <Row key={index}>
+                <Col span={16}>
+                    <Link to={elibUrlArray[index]} target="_blank" rel="noopener noreferrer" title="도서관으로 이동">
+                        <Text>{elibNameArray[index]}</Text>
+                    </Link>
+                </Col>
+                <Col span={2}>
+                    <Divider type='vertical' style={{ height: '2em' }} />
+                </Col>
+                <Col span={6}>
+                    <Link to={elibUrlArray[index]} target="_blank" rel="noopener noreferrer" title="도서관으로 이동">
+                        <Text>{ebookPlacedEnumArray[index]}</Text>
+                    </Link>
+                </Col>
+                {index + 1 === elibNameArray.length ? null : <Divider style={{ margin: '6px 0' }} />}
+            </Row>
+        ));
+    };
+
+    const bookData = sortDataByDate(data);
 
     return (
         <InfiniteScroll
-            dataLength={bookData?.pages?.length ?? 20}
+            dataLength={bookData?.length ?? 20}
             next={fetchNextPage}
             hasMore={hasNextPage}
             scrollThreshold={0.9}
@@ -20,6 +60,9 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
             endMessage={<Divider plain style={{ marginBottom: '32px' }}>더이상 찾을 수 있는 전자책이 없어요. 🤐</Divider>}
             style={{
                 padding: '0 10px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
             }}
         >
             <List
@@ -32,7 +75,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                     xs: 1, sm: 1,
                     md: 2, lg: 2, xl: 2, xxl: 2,
                 }}
-                dataSource={bookData?.pages}
+                dataSource={bookData}
                 renderItem={(item) => (
                     <List.Item
                         key={item.ebookBarcode}
@@ -56,10 +99,9 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                                     style={{
                                         maxWidth: '100%',
                                         maxHeight: '100%',
-                                        objectFit: 'cover', // 이미지가 부모 요소에 맞게 비율 유지
                                         width: '120px',
                                         height: 'auto',
-                                        filter: 'drop-shadow(5px 5px 5px black)',
+                                        boxShadow: '5px 5px 10px black',
                                         borderRadius: '5%',
                                     }}
                                 />
@@ -67,22 +109,42 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                             description={
                                 <>
                                     <Row >
-                                        <Title level={5} ellipsis={true} style={{ marginRight: '20px', marginTop: '8px', }}>
+                                        <Title level={5}
+                                            ellipsis={
+                                                ellipsis ? { tooltip: `${item.ebookTitle}` } : false
+                                            }
+                                            style={{ marginRight: '20px', marginTop: '8px' }}
+                                        >
                                             {item.ebookTitle}
                                         </Title>
                                     </Row>
                                     <Row >
-                                        <Text ellipsis={true} style={{ marginRight: '20px' }}>
+                                        <Text
+                                            ellipsis={
+                                                ellipsis ? { tooltip: `${item.ebookAuthor}` } : false
+                                            }
+                                            style={{ marginRight: '20px' }}
+                                        >
                                             저자: {item.ebookAuthor}
                                         </Text>
                                     </Row>
                                     <Row>
-                                        <Text ellipsis={true} style={{ marginRight: '20px' }}>
+                                        <Text
+                                            ellipsis={
+                                                ellipsis ? { tooltip: `${item.ebookPublisher}` } : false
+                                            }
+                                            style={{ marginRight: '20px' }}
+                                        >
                                             출판: {item.ebookPublisher}
                                         </Text>
                                     </Row>
                                     <Row >
-                                        <Text ellipsis={true} style={{ marginRight: '20px' }}>
+                                        <Text
+                                            ellipsis={
+                                                ellipsis ? { tooltip: `${item.ebookDate[0]}년 ${item.ebookDate[1]}월 ${item.ebookDate[2]}일` } : false
+                                            }
+                                            style={{ marginRight: '20px' }}
+                                        >
                                             출간: {item.ebookDate[0]}년 {item.ebookDate[1]}월 {item.ebookDate[2]}일
                                         </Text>
                                     </Row>
@@ -96,18 +158,8 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
                                         }}
                                         items={[{
                                             key: `${item.ebookBarcode}`,
-                                            label: <Text >보유 전자도서관 보기</Text>,
-                                            children:
-                                                <Link to={`${item.elibUrl}`} target="_blank" rel="noopener noreferrer" title="도서관으로 이동" >
-                                                    <Row >
-                                                        <Col span={16}>
-                                                            <Text >{item.elibName}</Text>
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <Text ellipsis={true} >{item.ebookPlacedEnum}</Text>
-                                                        </Col>
-                                                    </Row>
-                                                </Link>
+                                            label: <Text >보유 도서관 확인 및 이동</Text>,
+                                            children: renderElibs(item)
                                         }]}
                                     />
                                 </>
