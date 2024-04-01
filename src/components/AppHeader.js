@@ -9,7 +9,6 @@ import styled from "styled-components";
 
 const { Search } = Input;
 const { Text } = Typography;
-const inputElement = document.getElementById('searchInput');
 
 export default function AppHeader() {
     const { setSearchKeyword, setSearchElibKeyword } = useBookStoreActions();
@@ -27,6 +26,9 @@ export default function AppHeader() {
     const onClose = () => {
         setOpen(false);
     };
+
+    const inputElement = document.getElementById('searchInput');
+
 
     const handleSearch = (tempKeyword) => {
         //FIXME: 스낵바 노출 후 지속적인 유저의 타이핑 시 스낵바 재노출 이슈
@@ -117,7 +119,7 @@ export default function AppHeader() {
                 <Col flex="auto" style={{ display: 'flex', alignItems: 'center', }}>
                     <Search
                         id="searchInput"
-                        placeholder="제목 또는 저자를 입력해주세요"
+                        placeholder={location.pathname === '/ebooks' ? "제목 또는 저자를 입력해주세요" : "도서관 이름을 입력해주세요"}
                         size="large"
                         value={tempKeyword}
                         loading={isSearchLoading}
@@ -127,15 +129,55 @@ export default function AppHeader() {
                     />
                 </Col>
             </Row>
-            <Row justify="space-evenly" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '40px', textAlign: 'center', }}>
-                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/ebooks' ? '3px solid #3e3e3e' : 'none', }}>
-                    <Link to={'/ebooks'}><Text style={{ color: '#777', fontSize: '16px', }}>전자책 검색</Text></Link>
+            <Row justify="space-evenly" align="middle" wrap={false}style={{ width: '100%', maxWidth: '972px', maxHeight: '40px', textAlign: 'center', }}>
+                <Col
+                    span={8}
+                    style={{
+                        lineHeight: '40px',
+                        borderBottom: location.pathname === '/ebooks' ? '3px solid #3e3e3e' : 'none',
+                    }}
+                >
+                    <Link to={'/ebooks'}>
+                        <Text
+                            style={{
+                                color: location.pathname === '/ebooks' ? '#3e3e3e' : '#777',
+                                fontSize: '16px',
+                            }}
+                        >전자책 검색
+                        </Text>
+                    </Link>
                 </Col>
-                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/elibs' ? '3px solid #3e3e3e' : 'none', }}>
-                    <Link to={'/elibs'}><Text style={{ color: '#777', fontSize: '16px', }}>전자도서관 목록</Text></Link>
+                <Col span={8}
+                    style={{
+                        lineHeight: '40px',
+                        borderBottom: location.pathname === '/elibs' ? '3px solid #3e3e3e' : 'none',
+                    }}
+                >
+                    <Link to={'/elibs'}>
+                        <Text
+                            style={{
+                                color: location.pathname === '/elibs' ? '#3e3e3e' : '#777',
+                                fontSize: '16px',
+                            }}
+                        >전자도서관 목록
+                        </Text>
+                    </Link>
                 </Col>
-                <Col span={8} style={{ lineHeight: '40px', borderBottom: location.pathname === '/elibs/settings' ? '3px solid #3e3e3e' : 'none', }}>
-                    <Link to={'/elibs/settings'}><Text style={{ color: '#777', fontSize: '16px', }}>전자도서관 설정</Text></Link>
+                <Col span={8}
+                    style={{
+                        lineHeight: '40px',
+                        borderBottom: location.pathname === '/elibs/settings' ? '3px solid #3e3e3e' : 'none',
+                    }}
+                >
+                    <Link to={'/elibs/settings'}>
+                        <Text
+                            style={{
+                                color: location.pathname === '/elibs/settings' ? '#3e3e3e' : '#777',
+                                fontSize: '16px',
+                            }}
+                        >전자도서관 설정
+                        </Text>
+                    </Link>
                 </Col>
             </Row>
             <SnackbarComponent />
