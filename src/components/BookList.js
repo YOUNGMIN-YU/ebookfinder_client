@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import fallBack from '../assets/fallback.png';
 import CustomSkeleton from './CustomSkeleton';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton, Tooltip } from 'antd';
+import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton } from 'antd';
 import { Link } from 'react-router-dom';
+import { useEbookSortBy } from '../store/useBookStore';
 
 const { Text, Title } = Typography;
 
 export default function BookList({ data, fetchNextPage, hasNextPage, }) {
     const [ellipsis, setEllipsis] = useState(true);
+    const ebookSortBy = useEbookSortBy();
 
-    const sortDataByDate = (data) => {
+    const sortData = (data, ebookSortBy) => {
         const pages = data?.pages;
-
         if (Array.isArray(pages)) {
-            pages.sort((a, b) => {
-                const dateA = new Date(...a.ebookDate);
-                const dateB = new Date(...b.ebookDate);
-                return dateB - dateA;
-            });
+            if (ebookSortBy === 'ebookDate') {
+                pages.sort((a, b) => {
+                    const dateA = new Date(...a.ebookDate);
+                    const dateB = new Date(...b.ebookDate);
+                    return dateB - dateA;
+                });
+
+                return pages;
+
+            } else if (ebookSortBy === 'ebookTitle') {
+                pages.sort((a, b) => (a.ebookTitle.localeCompare(b.ebookTitle)));
+
+                return pages;
+
+            }
         }
-        return pages;
     };
 
     const renderElibs = (bookItems) => {
@@ -48,7 +58,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
         ));
     };
 
-    const bookData = sortDataByDate(data);
+    const bookData = sortData(data, ebookSortBy);
 
     return (
         <InfiniteScroll
