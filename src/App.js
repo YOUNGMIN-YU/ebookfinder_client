@@ -23,8 +23,8 @@ function App() {
       }}
     >
       <Routes>
+        <Route path="/" element={<Main />} />
         <Route element={<MainLayout />} >
-          <Route path="/" element={<Main />} />
           <Route path="/ebooks" element={<Ebooks />} />
           <Route path="/elibs" element={<Elibs />} />
           <Route path="/elibs/settings" element={<Elibs />} />
