@@ -3,6 +3,7 @@ import MainLayout from './components/MainLayout';
 import Main from './pages/Main';
 import Ebooks from './pages/Ebooks';
 import Elibs from './pages/Elibs';
+import ElibSetting from './pages/ElibSetting';
 import { ConfigProvider } from 'antd';
 
 const renderEmpty = () => (<></>); // 렌더링 될때 컴포넌트 기본 내장된 empty 컴포넌트 제거
@@ -27,7 +28,7 @@ function App() {
         <Route element={<MainLayout />} >
           <Route path="/ebooks" element={<Ebooks />} />
           <Route path="/elibs" element={<Elibs />} />
-          <Route path="/elibs/settings" element={<Elibs />} />
+          <Route path="/elibs/settings" element={<ElibSetting />} />
         </Route>
       </Routes>
     </ConfigProvider>
