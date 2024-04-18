@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import fallBack from '../assets/fallback.png';
 import CustomSkeleton from './CustomSkeleton';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton } from 'antd';
-import { Link } from 'react-router-dom';
-import { useEbookSortBy } from '../store/useBookStore';
+import { Divider, List, Typography, Row, Col, Collapse, Image, FloatButton, Spin } from 'antd';
+import { useEbookSortBy, useSearchedBooks } from '../store/useBookStore';
 
 const { Text, Title } = Typography;
 
 export default function BookList({ data, fetchNextPage, hasNextPage, }) {
-    const [ellipsis, setEllipsis] = useState(true);
+    const { status : searchedBooksStatus } = useSearchedBooks();
+    const [ellipsis] = useState(true);
     const ebookSortBy = useEbookSortBy();
 
     const sortData = (data, ebookSortBy) => {
@@ -67,7 +68,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
             hasMore={hasNextPage}
             scrollThreshold={0.9}
             loader={<CustomSkeleton />}
-            endMessage={<Divider plain style={{ marginBottom: '32px' }}>더이상 찾을 수 있는 전자책이 없어요. 🤐</Divider>}
+            endMessage={searchedBooksStatus !== 'success' ? <Spin size='large' fullscreen /> : <Divider plain style={{ marginBottom: '32px' }}>더이상 찾을 수 있는 전자책이 없어요. 🤐</Divider>}
             style={{
                 padding: '0 10px',
                 display: 'flex',
@@ -78,7 +79,7 @@ export default function BookList({ data, fetchNextPage, hasNextPage, }) {
             <List
                 style={{
                     width: '100%',
-                    maxWidth: 972,
+                    maxWidth: '972px',
                 }}
                 grid={{
                     column: 1,
