@@ -1,6 +1,7 @@
 import React from 'react'
-import { List, Row, Typography, FloatButton } from 'antd';
 import { Link } from 'react-router-dom';
+import { List, Row, Typography, FloatButton } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
 
 const { Text, Title } = Typography;
 
@@ -18,7 +19,7 @@ export default function ElibList(data) {
             <List
                 style={{
                     width: '100%',
-                    maxWidth: 972,
+                    maxWidth: '972px',
                     marginBottom: '24px'
                 }}
                 grid={{
@@ -38,42 +39,44 @@ export default function ElibList(data) {
                         key={item.elibId}
                         style={{
                             width: '100%',
-                            maxWidth: 972,
+                            maxWidth: '972px',
+                            borderBottom: '1px solid #d8dfe6',
                         }}
                     >
                         <List.Item.Meta
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                margin: '5px 0',
+                                margin: '5px',
                             }}
                             description={
-                                <>
+                                <div style={{ marginBottom: '16px' }}>
                                     <Row >
                                         <Link to={`${item.elibUrl}`} target="_blank" rel="noopener noreferrer" title="도서관으로 이동" >
-                                            <Title level={5} ellipsis={true} style={{ marginRight: '20px', marginTop: '8px', }}>
+                                            <Title level={5} ellipsis={true} style={{ marginRight: '20px', marginTop: '4px', }}>
                                                 {item.elibName}
                                             </Title>
                                         </Link>
                                     </Row>
                                     <Row >
                                         <Text ellipsis={true} style={{ marginRight: '20px' }}>
-                                            {item.elibEbookCount}권 보유
+                                            소장 권수 : 총 {item.elibEbookCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}권 보유 
                                         </Text>
                                     </Row>
                                     <Row>
                                         <Text ellipsis={true} style={{ marginRight: '20px' }}>
-                                            {item.elibClass}
+                                            분류 : {item.elibClass}
                                         </Text>
                                     </Row>
-                                    <Row >
+                                    <Row>
                                         <Link to={`/ebooks?elibNum=${item.elibId}`}>
-                                            <Text ellipsis={true} style={{ marginRight: '20px' }}>
+                                            <Text ellipsis={true} style={{ marginRight: '10px' }}>
                                                 보유 전자책 보러가기
                                             </Text>
+                                            <RightOutlined style={{ fontSize: '12px', color: 'rgba(0, 0, 0, 0.88)', marginRight: '20px'}}/>
                                         </Link>
                                     </Row>
-                                </>
+                                </div>
                             }
                         />
                     </List.Item>
