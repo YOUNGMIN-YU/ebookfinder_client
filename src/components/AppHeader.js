@@ -1,24 +1,58 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import HeaderLogo from '../assets/HeaderLogo.png'
 import useSnackbar from '../hooks/useSnackbar';
-import { useBookStoreActions } from "../store/useBookStore";
-import { Input, Col, Row, Image, Drawer, Button, Typography } from 'antd';
+import { useBookStoreActions, useSteps, useTourOpen } from "../store/useBookStore";
+import { Input, Col, Row, Image, Drawer, Button, Typography, Tour } from 'antd';
 import { AlignRightOutlined, CloseCircleFilled } from '@ant-design/icons';
 import styled from "styled-components";
 
 const { Search } = Input;
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 export default function AppHeader() {
-    const { setSearchKeyword, setSearchElibKeyword } = useBookStoreActions();
+    const stepRef1 = useRef(null);
+    const stepRef2 = useRef(null);
+    const stepRef3 = useRef(null);
+    const { setSearchKeyword, setSearchElibKeyword, setTourOpen } = useBookStoreActions();
     const [showSnackbar, SnackbarComponent] = useSnackbar();
     const [tempKeyword, setTempKeyword] = useState('');
     const [isSearchLoading, setIsSearchLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [showSuffix, setShowSuffix] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const tourOpen = useTourOpen();
     const location = useLocation();
+
+    const steps = [
+        {
+            title: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>이 탭을 눌러서 전자책 검색을 할 수 있어요</Paragraph>),
+            description: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>서비스 가능한 모든 전자도서관에서 전자책을 검색 해보세요</Paragraph>),
+            target: () => stepRef1.current,
+        },
+        {
+            title: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>이 탭을 눌러서 서비스 가능한 전자도서관을 확인하고 검색 할 수 있어요</Paragraph>),
+            description: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>서비스 가능한 모든 전자도서관을 검색하고 해당 도서관에 있는 전자책을 확인 해보세요</Paragraph>),
+            target: () => stepRef2.current,
+        },
+        {
+            title: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>이 탭을 눌러서 내 전자도서관을 설정해 원하는 도서관의 책만 검색 할 수 있어요</Paragraph>),
+            description: (<Paragraph ellipsis={{
+                rows: 2,
+            }}>내 전자도서관을 저장하려면 로그인이 필요해요</Paragraph>),
+            target: () => stepRef3.current,
+        },
+    ];
 
     const showDrawer = () => {
         setOpen(true);
@@ -28,7 +62,6 @@ export default function AppHeader() {
     };
 
     const inputElement = document.getElementById('searchInput');
-
 
     const handleSearch = (tempKeyword) => {
         //FIXME: 스낵바 노출 후 지속적인 유저의 타이핑 시 스낵바 재노출 이슈
@@ -94,7 +127,7 @@ export default function AppHeader() {
         <HeadrowWrapper >
             <Row justify="space-between" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '50px' }}>
                 <Col >
-                    <Link to="/">
+                    <Link to="/ebooks">
                         <Image
                             src={HeaderLogo}
                             alt="ebookfinder"
@@ -111,7 +144,7 @@ export default function AppHeader() {
                 <Col>
                     <Button type="secondary" icon={<AlignRightOutlined style={{ fontSize: '24px' }} />} onClick={showDrawer} />
                     <Drawer onClose={onClose} open={open} style={{ maxHeight: '100dvh' }}>
-                        <Text strong>로그인/회원가입</Text>
+                        <Text strong>로그인/회원가입 (🧑🏼‍🔧서비스 준비 중❗)</Text>
                     </Drawer>
                 </Col>
             </Row>
@@ -129,8 +162,9 @@ export default function AppHeader() {
                     />
                 </Col>
             </Row>
-            <Row justify="space-evenly" align="middle" wrap={false}style={{ width: '100%', maxWidth: '972px', maxHeight: '40px', textAlign: 'center', }}>
+            <Row justify="space-evenly" align="middle" wrap={false} style={{ width: '100%', maxWidth: '972px', maxHeight: '40px', textAlign: 'center', }}>
                 <Col
+                    ref={stepRef1}
                     span={8}
                     style={{
                         lineHeight: '40px',
@@ -147,7 +181,9 @@ export default function AppHeader() {
                         </Text>
                     </Link>
                 </Col>
-                <Col span={8}
+                <Col
+                    ref={stepRef2}
+                    span={8}
                     style={{
                         lineHeight: '40px',
                         borderBottom: location.pathname === '/elibs' ? '3px solid #3e3e3e' : 'none',
@@ -163,7 +199,9 @@ export default function AppHeader() {
                         </Text>
                     </Link>
                 </Col>
-                <Col span={8}
+                <Col
+                    ref={stepRef3}
+                    span={8}
                     style={{
                         lineHeight: '40px',
                         borderBottom: location.pathname === '/elibs/settings' ? '3px solid #3e3e3e' : 'none',
@@ -180,6 +218,7 @@ export default function AppHeader() {
                     </Link>
                 </Col>
             </Row>
+            <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} style={{ width: '75dvw' }} />
             <SnackbarComponent />
         </HeadrowWrapper>
     )

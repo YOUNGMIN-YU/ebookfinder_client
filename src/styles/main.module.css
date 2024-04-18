@@ -1,38 +1,89 @@
 .layout {
-    margin: 30px;
-    width: calc(100dvw - 60px);
+    width: 100dvw;
     max-width: 932px;
-    height: calc(100dvh - 60px);
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
-:is(.fadeinHeader, .fadeinMain, .fadeinTour, .fadeinSearch) {
+:is(.fadeinHeader, .fadeinMain, .fadeinButtonTour, .fadeinButtonSearch) {
     opacity: 0;
-    animation: fadein 0.75s ease;
+    animation: fadein 0.8s ease;
     animation-fill-mode: forwards;
 }
 
 .fadeinHeader {
-    width: 40%;
-    max-width: 486px;
+    width: 45%;
+    max-width: 350px;
+    padding-left: 30px;
+    padding-top: 30px;
     animation-delay: 0.5s;
 }
 
 .fadeinMain {
-    width: 100%;
+    width: 85%;
     max-width: 932px;
     animation-delay: 1s;
 }
 
-.fadeinTour {
-    animation-delay: 1.5s;
-}
-
-.fadeinSearch {
+.fadeinButtonTour {
+    display: block;
+    position: fixed;
+    bottom: 108px;
+    left: 25dvw;
+    transform: translateX(-50%);
+    z-index: 100;
+    max-width: 50dvw;
+    width: 90%;
+    cursor: pointer;
+    margin: 0 auto;
+    background: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .16), 4px 8px 28px rgba(0, 0, 0, .08);
+    border-radius: 60px;
+    color: #fff;
+    text-align: center;
+    padding: 16px 0;
+    line-height: 24px;
+    font-size: 18px;
+    font-family: 'Dovemayo_gothic';
+    min-height: 48px;
     animation-delay: 2s;
 }
+
+.fadeinButtonSearch {
+    display: block;
+    position: fixed;
+    bottom: 32px;
+    left: 25dvw;
+    transform: translateX(-50%);
+    z-index: 100;
+    max-width: 50dvw;
+    width: 90%;
+    cursor: pointer;
+    margin: 0 auto;
+    background: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .16), 4px 8px 28px rgba(0, 0, 0, .08);
+    border-radius: 60px;
+    color: #fff;
+    text-align: center;
+    padding: 16px 0;
+    line-height: 24px;
+    font-size: 18px;
+    font-family: 'Dovemayo_gothic';
+    min-height: 48px;
+    animation-delay: 2s;
+}
+
+/* 
+.fadeinButton {
+    border-Color: #fff;
+    background: black;
+    color: #fff;
+    font-weight: 600;
+    animation-delay: 2s;
+    margin-bottom: 50px;
+} */
 
 @keyframes fadein {
     from {
@@ -41,7 +92,7 @@
     }
 
     to {
-        opacity: 1  ;
+        opacity: 1;
         transform: translateX(0);
     }
 }

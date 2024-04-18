@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainText from '../assets/MainText.png';
 import HeaderLogo from '../assets/HeaderLogo.png';
 import { useBookStoreActions } from "../store/useBookStore";
-import { Tour, Button } from 'antd';
 import styles from '../styles/main.module.css';
 
 export default function Main() {
@@ -24,17 +23,11 @@ export default function Main() {
         <div>
           <img className={styles.fadeinMain} src={MainText} />
         </div>
-        <div className={styles.buttonLayout}>
-          <div className={styles.fadeinTour}>
-            <Button type="primary" onClick={handleBeginTour}>
-              처음 방문 했어요
-            </Button>
-          </div>
-          <div className={styles.fadeinSearch}>
-            <Button type="secondary" onClick={() => navigate('/ebooks')}>
-              바로 검색 할래요
-            </Button>
-          </div>
+        <div className={styles.fadeinButtonTour} onClick={handleBeginTour}>
+          <span><b>처음</b> 방문 했어요</span>
+        </div>
+        <div className={styles.fadeinButtonSearch} onClick={() => navigate("/ebooks")}>
+          <span>바로 <b>검색</b> 할래요</span>
         </div>
       </div>
     </>
